@@ -1,16 +1,20 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, AppRegistry,TextInput,TouchableOpacity } from 'react-native';
 import Textarea from 'react-native-textarea';
-import {Button } from 'react-native-elements';
+import Display from 'react-native-display';
+
+
 export default class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      enable:true,
       name: '',
       emailid: '',
-      contents:''
+      contents:'',
+      showMessage:"",
+      showMessageCheckc:false
     };
+    this.send = this.send.bind(this);
   }
 
   render() {
@@ -20,9 +24,12 @@ export default class App extends Component {
           Contact Us
         </Text>
         <View>
+        <Display enable={this.state.showMessageCheck} >
+                <Text style={styles.messages}>{this.state.showMessage}</Text>
+        </Display> 
           <TextInput style={styles.inputBox} 
                 underlineColorAndroid='transparent' 
-                placeholder="EnterName"
+                placeholder="Enter Name"
                 placeholderTextColor = "black"
                 selectionColor="white"
                 onSubmitEditing={()=> this.password.focus()}
@@ -31,7 +38,7 @@ export default class App extends Component {
                 />          
           <TextInput style={styles.inputBox} 
                 underlineColorAndroid='transparent' 
-                placeholder="Email"
+                placeholder="Enter Email Id"
                 placeholderTextColor = "black"
                 selectionColor="white"
                 keyboardType="email-address"
@@ -51,27 +58,43 @@ export default class App extends Component {
                 underlineColorAndroid={'transparent'}
               /> 
           </View>
-          {/* <Button
-            onPress={this.send}
-            title="Send Mail"
-            color="white"
-            accessibilityLabel="Send Mail"
-          /> */}
-          <Button
-            icon={{name: '', size: 32}}
-            buttonStyle={{backgroundColor: '#7f77ef', borderRadius: 10,height:45}}
-            textStyle={{textAlign: 'center', fontWeight:"700"}}
-            titleStyle={{fontWeight: "200"}}
-            title={`Send Mail`}
-          />      
+
+          <TouchableOpacity style={styles.button} onPress={this.send} >
+             <Text style={styles.buttonText}>Send Mail</Text>
+          </TouchableOpacity> 
+
         </View>
       </View>
     );
   }
 
-  send = () =>{
-    console.log(Hiii);
+  send(){
+    let name = this.state.name,
+        email = this.state.emailid,
+        contents = this.state.contents;
+    fetch('http://0.0.0.0:3000/send',{
+      method: 'GET',
+      headers:{
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          text: "Hii, I am" + name + ". Email Id: " + email + ".Contents:" + contents ,
+      }),
+    })
+    .then(resData => resData.json())
+    .then(res => {
+      console.warn('Reciened as '+ res);
+      this.setState({showMessage:'Mail Successfully Sent',
+      showMessageCheck:true
+      });
+    })
+    .catch(err => {
+      this.setState({showMessage:"Failed to send the mail", showMessageCheck:true
+     });
+    });
   }
+
 }
 
 const styles = StyleSheet.create({
@@ -120,19 +143,29 @@ const styles = StyleSheet.create({
   },
   button:{
     width:300,
-    backgroundColor:'#1c313a',
+    backgroundColor:'white',
     borderRadius: 25,
-    marginVertical: 10,
+    marginVertical: 30,
     paddingVertical: 13,
     alignItems:'center',
-    marginHorizontal:20
+    marginHorizontal:60
 
   },
   buttonText:{
     fontSize:16,
     fontWeight:'500',
-    color:'white',
+    color:'black',
     textAlign:'center'
 
+  },
+  messages:{
+    color:'white',
+    textAlign:'center',
+    backgroundColor:'green',
+    borderRadius:6,
+    width:300,
+    height:40,
+    marginBottom:10,
+    marginTop:10,
   },
 });
