@@ -12,7 +12,7 @@ export default class App extends Component {
       emailid: '',
       contents:'',
       showMessage:"",
-      showMessageCheckc:false
+      showMessageCheck:false
     };
     this.send = this.send.bind(this);
   }
@@ -72,8 +72,8 @@ export default class App extends Component {
     let name = this.state.name,
         email = this.state.emailid,
         contents = this.state.contents;
-    fetch('http://0.0.0.0:3000/send',{
-      method: 'GET',
+    fetch('http://10.1.11.90/send',{
+      method: 'POST',
       headers:{
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -84,7 +84,7 @@ export default class App extends Component {
     })
     .then(resData => resData.json())
     .then(res => {
-      console.warn('Reciened as '+ res);
+      console.warn('Recieved as '+ res);
       this.setState({showMessage:'Mail Successfully Sent',
       showMessageCheck:true
       });
@@ -92,6 +92,8 @@ export default class App extends Component {
     .catch(err => {
       this.setState({showMessage:"Failed to send the mail", showMessageCheck:true
      });
+      throw(err)
+      
     });
   }
 
