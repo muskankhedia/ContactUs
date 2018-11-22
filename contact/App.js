@@ -17,68 +17,95 @@ export default class App extends Component {
     };
     this.send = this.send.bind(this);
   }
-
-  render() {
-    return (
-      <View style = {styles.container} > 
+  render(){
+    return(
+      <View style = {styles.container}>
         <Text style = {styles.heading}>
           Contact Us
         </Text>
+      <View style={{flex:1, flexDirection:'column'}}>
         <View>
-        <Display enable={this.state.showMessageCheck} >
-                <Text style={styles.messages}>{this.state.showMessage}</Text>
-        </Display> 
-          <TextInput style={styles.inputBox} 
-                underlineColorAndroid='transparent' 
-                placeholder="Enter Name"
-                placeholderTextColor = "black"
-                selectionColor="white"
-                onSubmitEditing={()=> this.password.focus()}
-                onChangeText = {(name) => this.setState({name})}
-                value = {this.state.name}
-                />          
-          <TextInput style={styles.inputBox} 
-                underlineColorAndroid='transparent' 
-                placeholder="Enter Email Id"
-                placeholderTextColor = "black"
-                selectionColor="white"
-                keyboardType="email-address"
-                ref = {(input) => this.password = input}
-                onSubmitEditing={()=> this.subject.focus()}
-                onChangeText = {(emailid) => this.setState({emailid})}
-                value = {this.state.emailid}
-                />
-            <TextInput style={styles.inputBox} 
-                underlineColorAndroid='transparent' 
-                placeholder="Enter Subject"
-                placeholderTextColor = "black"
-                selectionColor="white"
-                ref = {(input) => this.subject = input}
-                onChangeText = {(subject) => this.setState({subject})}
-                value = {this.state.subject}
-                />
-          <View style={styles.contents}>
-          <Textarea 
-                containerStyle={styles.textareaContainer}
-                style= {styles.feedback}
-                onChangeText={(contents) => this.setState({contents})}
-                defaultValue={this.state.text}
-                maxLength={400}
-                placeholder={'Write the feedback'}
-                placeholderTextColor={'black'}
-                underlineColorAndroid={'transparent'}
-              /> 
+          <View style={{flex:1, flexDirection:'row'}}>
+              <View >
+                 <Text style={styles.text}>Name</Text>
+              </View>
+              <View>
+                  <TextInput style={styles.inputBox1} 
+                    underlineColorAndroid='transparent' 
+                    placeholder="Enter Name"
+                    placeholderTextColor = "white"
+                    selectionColor="black"
+                    onSubmitEditing={()=> this.password.focus()}
+                    onChangeText = {(name) => this.setState({name})}
+                    value = {this.state.name}
+                    />  
+              </View>
           </View>
-
-          <TouchableOpacity style={styles.button} onPress={this.send} >
-             <Text style={styles.buttonText}>Send Mail</Text>
-          </TouchableOpacity> 
-
+          <View style={{flex:1, flexDirection:'row', marginVertical:70}}>
+              <View >
+                 <Text style={styles.text}>Email</Text>
+              </View>
+              <View>
+                  <TextInput style={styles.inputBox2} 
+                    underlineColorAndroid='transparent' 
+                    placeholder="Enter Email Id"
+                    placeholderTextColor = "white"
+                    selectionColor="white"
+                    keyboardType="email-address"
+                    ref = {(input) => this.password = input}
+                    onSubmitEditing={()=> this.subject.focus()}
+                    onChangeText = {(emailid) => this.setState({emailid})}
+                    value = {this.state.emailid}
+                    />
+              </View>
+          </View>
+          <View style={{flex:1, flexDirection:'row'}}>
+              <View >
+                 <Text style={styles.text}>Subject</Text>
+              </View>
+              <View>
+                <TextInput style={styles.inputBox3} 
+                  underlineColorAndroid='transparent' 
+                  placeholder="Enter Subject"
+                  placeholderTextColor = "white"
+                  selectionColor="white"
+                  ref = {(input) => this.subject = input}
+                  onChangeText = {(subject) => this.setState({subject})}
+                  value = {this.state.subject}
+                  />
+              </View>
+          </View>
+          <View style={{flex:1, flexDirection:'row', marginVertical:70}}>
+              <View >
+                 <Text style={styles.text}>Contents</Text>
+              </View>
+              <View>
+                  <Textarea 
+                    containerStyle={styles.textareaContainer}
+                    style= {styles.feedback}
+                    onChangeText={(contents) => this.setState({contents})}
+                    defaultValue={this.state.text}
+                    maxLength={400}
+                    placeholder={'Write the feedback'}
+                    placeholderTextColor={'white'}
+                    underlineColorAndroid={'transparent'}
+                  /> 
+              </View>
+          </View>
         </View>
-      </View>
+        
+
+        <TouchableOpacity style={styles.button} onPress={this.send} >
+             <Text style={styles.buttonText}>Send Mail</Text>
+          </TouchableOpacity>
+
+          <Display enable={this.state.showMessageCheck} >
+            <Text style={styles.messages}>{this.state.showMessage}</Text>
+          </Display> 
+        </View>
+       </View> 
     );
   }
-
   send(){
     let name = this.state.name,
         email = this.state.emailid,
@@ -105,9 +132,8 @@ export default class App extends Component {
     .catch(err => {
       this.setState({showMessage:"Failed to send the mail", showMessageCheck:true
      });
-      throw(err)
-      
-    });
+      throw(err)   
+  });
     this.setState({
       name:"",
       emailid:"",
@@ -115,15 +141,20 @@ export default class App extends Component {
       text:""
     }) 
   }
-
 }
 
 console.disableYellowBox=true;
 
 const styles = StyleSheet.create({
   container:{
-    backgroundColor:'#7f77ef',
+    backgroundColor:'#004976',
     height:800
+  },
+  text:{
+    fontSize:18,
+    paddingVertical:15,
+    paddingHorizontal:15,
+    color:'white'
   },
   heading:{
     marginTop:50,
@@ -135,28 +166,56 @@ const styles = StyleSheet.create({
   feedback:{
     fontSize:20,
     paddingHorizontal:10,
-    paddingVertical:5
+    paddingVertical:5,
+    color:'white'
   },
-  inputBox:{
-    width:350,
-    backgroundColor:'white',
+  inputBox1:{
+    width:300,
+    backgroundColor:'#377EAC',
     borderColor:'black',
     borderRadius: 0,
-    paddingHorizontal:16,
+    paddingHorizontal:10,
     fontSize:18,
-    color:'black',
+    color:'white',
     marginVertical: 10,
-    height:45,
+    height:40,
     alignItems:'center',
-    marginHorizontal:30
+    marginHorizontal:24
+
+  },  
+  inputBox2:{
+    width:300,
+    backgroundColor:'#377EAC',
+    borderColor:'black',
+    borderRadius: 0,
+    paddingHorizontal:10,
+    fontSize:18,
+    color:'white',
+    marginVertical: 10,
+    height:40,
+    alignItems:'center',
+    marginHorizontal:29
+
+  },  
+  inputBox3:{
+    width:300,
+    backgroundColor:'#377EAC',
+    borderColor:'black',
+    borderRadius: 0,
+    paddingHorizontal:10,
+    fontSize:18,
+    color:'white',
+    marginVertical: 10,
+    height:40,
+    alignItems:'center',
+    marginHorizontal:14
 
   },  
   textareaContainer:{
     height:180,
-    width:350,
+    width:300,
     alignContent:'center',
-    backgroundColor:'white',
-    marginHorizontal:10
+    backgroundColor:'#377EAC',
     },
 
   contents:{
@@ -166,9 +225,9 @@ const styles = StyleSheet.create({
   },
   button:{
     width:300,
-    backgroundColor:'white',
-    borderRadius: 25,
-    marginVertical: 30,
+    backgroundColor:'#377EAC',
+    borderRadius: 0,
+    marginTop: 160,
     paddingVertical: 13,
     alignItems:'center',
     marginHorizontal:60
@@ -177,19 +236,24 @@ const styles = StyleSheet.create({
   buttonText:{
     fontSize:16,
     fontWeight:'500',
-    color:'black',
+    color:'white',
     textAlign:'center'
 
   },
   messages:{
-    color:'white',
+    color:'#377EAC',
     textAlign:'center',
-    backgroundColor:'#7f77ef',
-    borderRadius:6,
-    fontSize:25,
+    backgroundColor:'#ffffff',
+    borderRadius:0,
+    paddingTop:7,
+    fontSize:20,
     width:300,
     height:40,
+    marginHorizontal:60,
     marginBottom:5,
-    marginTop:5,
+    marginTop:30,
   },
 });
+
+
+
