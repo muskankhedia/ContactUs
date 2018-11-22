@@ -72,14 +72,14 @@ export default class App extends Component {
     let name = this.state.name,
         email = this.state.emailid,
         contents = this.state.contents;
-    fetch('http://10.1.11.90/send',{
+    fetch('http://127.0.0.1:3000/send',{
       method: 'POST',
       headers:{
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-          text: "Hii, I am" + name + ". Email Id: " + email + ".Contents:" + contents ,
+          text: "Hii, I am" + name + ". Email Id: " + email + ".Contents:" + contents
       }),
     })
     .then(resData => resData.json())
