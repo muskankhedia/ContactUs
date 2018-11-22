@@ -84,7 +84,7 @@ export default class App extends Component {
         email = this.state.emailid,
         subject = this.state.subject,
         contents = this.state.contents;
-    fetch('http://192.168.43.63:3000/send',{
+    fetch('https://contacus.herokuapp.com/send',{
       method: 'POST',
       headers:{
         'Accept': 'application/json',
@@ -92,7 +92,7 @@ export default class App extends Component {
       },
       body: JSON.stringify({
           subject:subject,
-          text: "Hii, I am" + name + ". Email Id: " + email + "." + "/n" + "Contents:" + contents
+          text: "Hii, I am " + name + ". Email Id: " + email + ".  Contents:" + contents
       }),
     })
     .then(resData => resData)
@@ -108,6 +108,12 @@ export default class App extends Component {
       throw(err)
       
     });
+    this.setState({
+      name:"",
+      emailid:"",
+      subject:"",
+      text:""
+    }) 
   }
 
 }
@@ -180,9 +186,10 @@ const styles = StyleSheet.create({
     textAlign:'center',
     backgroundColor:'#7f77ef',
     borderRadius:6,
+    fontSize:25,
     width:300,
     height:40,
-    marginBottom:10,
-    marginTop:10,
+    marginBottom:5,
+    marginTop:5,
   },
 });
