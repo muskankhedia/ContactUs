@@ -10,6 +10,7 @@ export default class App extends Component {
     this.state = {
       name: '',
       emailid: '',
+      subject:'',
       contents:'',
       showMessage:"",
       showMessageCheck:false
@@ -43,8 +44,18 @@ export default class App extends Component {
                 selectionColor="white"
                 keyboardType="email-address"
                 ref = {(input) => this.password = input}
+                onSubmitEditing={()=> this.subject.focus()}
                 onChangeText = {(emailid) => this.setState({emailid})}
                 value = {this.state.emailid}
+                />
+            <TextInput style={styles.inputBox} 
+                underlineColorAndroid='transparent' 
+                placeholder="Enter Subject"
+                placeholderTextColor = "black"
+                selectionColor="white"
+                ref = {(input) => this.subject = input}
+                onChangeText = {(subject) => this.setState({subject})}
+                value = {this.state.subject}
                 />
           <View style={styles.contents}>
           <Textarea 
@@ -71,18 +82,20 @@ export default class App extends Component {
   send(){
     let name = this.state.name,
         email = this.state.emailid,
+        subject = this.state.subject,
         contents = this.state.contents;
-    fetch('http://127.0.0.1:3000/send',{
+    fetch('http://192.168.43.63:3000/send',{
       method: 'POST',
       headers:{
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-          text: "Hii, I am" + name + ". Email Id: " + email + ".Contents:" + contents
+          subject:subject,
+          text: "Hii, I am" + name + ". Email Id: " + email + "." + "/n" + "Contents:" + contents
       }),
     })
-    .then(resData => resData.json())
+    .then(resData => resData)
     .then(res => {
       console.warn('Recieved as '+ res);
       this.setState({showMessage:'Mail Successfully Sent',
@@ -98,6 +111,8 @@ export default class App extends Component {
   }
 
 }
+
+console.disableYellowBox=true;
 
 const styles = StyleSheet.create({
   container:{
@@ -163,7 +178,7 @@ const styles = StyleSheet.create({
   messages:{
     color:'white',
     textAlign:'center',
-    backgroundColor:'green',
+    backgroundColor:'#7f77ef',
     borderRadius:6,
     width:300,
     height:40,

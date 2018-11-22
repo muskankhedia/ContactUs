@@ -27,19 +27,20 @@ app.get('/',function(req,res){
     res.sendfile('index.html');
 });
 app.post('/send',function(req,res){
+    console.log("got request")
     var mailOptions={
         to : 'sagartrading.khedia@gmail.com',
-        text : "hii"
+        subject: req.body.subject,
+        text : req.body.text
     }
     console.log(mailOptions);
     smtpTransport.sendMail(mailOptions, function(error, response){
      if(error){
-            console.log(error);
-            res.end("error");
+            throw(error);
      }else{
             console.log("Message sent: " + response.message);
-            res.end("sent");
-         }
+            res.send("sent");
+        }
 });
 });
 
